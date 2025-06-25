@@ -1,0 +1,13 @@
+rootProject.name = 'HaruHanip-BE'
+include 'haruhanip-exteranl-api'
+include 'haruhanip-common'
+include 'haruhanip-domain'
+include 'haruhanip-infra'
+include 'haruhanip-batch'
+include 'haruhanip-domain:domain-service'
+findProject(':haruhanip-domain:domain-service')?.name = 'domain-service'
+include 'haruhanip-domain:domain-rds'
+findProject(':haruhanip-domain:domain-rds')?.name = 'domain-rds'
+include 'haruhanip-domain:domain-redis'
+findProject(':haruhanip-domain:domain-redis')?.name = 'domain-redis'
+
