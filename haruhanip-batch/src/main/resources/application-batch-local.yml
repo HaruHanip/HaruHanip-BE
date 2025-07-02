@@ -1,0 +1,43 @@
+spring:
+  ai:
+    openai:
+      api-key: ${OPENAI-APIKEY}
+      chat:
+        options:
+          model: gpt-4o-mini # 모델 입력 # 필수
+          # 아래는 세부 GPT 모델 설정 값
+          temperature:
+          frequencyPenalty:
+          presencePenalty:
+          maxTokens:
+          topP:
+
+app:
+  gpt:
+    prompt-template: |-
+      # 1) 절대 “단일 따옴표(single quote, ')”를 사용하지 마세요. 
+      #    모든 프로퍼티 이름과 문자열 값은 **더블 쿼트**(")만 사용해야 합니다.
+      # 2) JSON만 출력하세요. 마크다운 백틱, 주석, 설명 금지.
+      # 3) 배열과 객체의 중첩 구문을 정확히 닫아 주세요.
+
+      Generate 10 multiple-choice %s questions.
+      Return ONLY the JSON array, with these fields in each object:
+        - "title": String
+        - "description": String
+        - "options": Array of {"optionIndex": int, "content": String}
+        - "correctOption": int
+        - "explanation": String
+        - "difficulty": String (one of "EASY","MEDIUM","HARD")
+      모든 질문·설명·옵션·해설·난이도는 **한국어**로 작성하고,  
+      **절대** single quote가 아닌 **double quote**만 사용하세요.
+
+
+
+    # 2) 시스템 메시지 (역할 + 언어 설정)
+    system-message: "당신은 유용한 CS 문제 생성기입니다. 모든 응답을 한국어로 작성해주세요."
+
+    # 3) 모델, 옵션들
+    model: "gpt-4o-mini"
+    temperature: 0.8
+    max-completion-tokens: 2048
+
