@@ -128,5 +128,20 @@ public class UserService {
         }
     }
 
+    public UserProfileResponse getUserProfile(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없음"));
+
+        return UserProfileResponse.builder()
+                .userId(user.getUserId())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .profileImage(user.getProfileImage())
+                .role(user.getUserRole())
+                .registStatus(user.getRegistStatus())
+                .birthday(user.getBirthday())
+                .createdAt(user.getCreatedAt())
+                .build();
+    }
 }
 

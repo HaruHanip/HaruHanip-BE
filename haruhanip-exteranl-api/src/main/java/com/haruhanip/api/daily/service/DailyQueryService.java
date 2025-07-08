@@ -1,5 +1,6 @@
 package com.haruhanip.api.daily.service;
 
+import com.haruhanip.api.daily.dto.DailyIdResponse;
 import com.haruhanip.api.daily.dto.DailyResponse;
 import com.haruhanip.domains.category.domain.Category;
 import com.haruhanip.domains.category.repository.CategoryRepository;
@@ -32,5 +33,15 @@ public class DailyQueryService {
         return dailyRepository.findByCategoryAndDailyDate(category, date)
                 .map(DailyResponse::from)
                 .orElseThrow(() -> new IllegalArgumentException("Daily not found for the given date"));
+    }
+
+    @Transactional(readOnly = true)
+    public DailyIdResponse getTodayDailyId(LocalDate date, Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+
+        return dailyRepository.findByCategoryAndDailyDate(category, date)
+                .map(daily -> DailyIdResponse.from(daily.getDailyId()))
+                .orElseThrow(() -> new IllegalArgumentException("No daily found for the given date"));
     }
 }

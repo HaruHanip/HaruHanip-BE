@@ -6,15 +6,20 @@ import lombok.Getter;
 
 @Getter
 public class CategoryResponse {
-    public String name;
+
+    private final Long categoryId;
+
+    private final String name;
 
     @Builder
-    public CategoryResponse(String name) {
+    public CategoryResponse(Long categoryId, String name) {
+        this.categoryId = categoryId;
         this.name = name;
     }
 
     public static CategoryResponse from(Category category) {
         return CategoryResponse.builder()
+                .categoryId(category.getCategoryId())
                 .name(category.getName())
                 .build();
     }

@@ -1,6 +1,7 @@
 package com.haruhanip.api.daily.controller;
 
 import com.haruhanip.api.daily.api.DailyQueryApi;
+import com.haruhanip.api.daily.dto.DailyIdResponse;
 import com.haruhanip.api.daily.dto.DailyResponse;
 import com.haruhanip.api.daily.service.DailyQueryService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,15 @@ public class DailyQueryController implements DailyQueryApi {
             @PathVariable Long categoryId) {
         LocalDate date = LocalDate.now(); // Assuming you want to get today's daily
         DailyResponse response = dailyQueryService.getDailyByDate(categoryId, date);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/id/today/category/{categoryId}")
+    public ResponseEntity<DailyIdResponse> getTodayDailyId(
+            @PathVariable Long categoryId
+    ) {
+        LocalDate date = LocalDate.now(); // Assuming you want to get today's daily
+        DailyIdResponse response = dailyQueryService.getTodayDailyId(date, categoryId);
         return ResponseEntity.ok(response);
     }
 }
