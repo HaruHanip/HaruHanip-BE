@@ -16,4 +16,6 @@ public interface DailyRepository extends JpaRepository<Daily, Long>{
     Optional<Daily> findByCategoryAndDailyDate(Category category, LocalDate date);
 
     boolean existsByCategoryAndDailyDate(Category category, LocalDate today);
+
+    Optional<Daily> findByDailyDate(LocalDate date);
 }

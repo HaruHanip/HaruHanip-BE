@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 public class DailyProblem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "daily_problem_id")
+    private Long dailyProblemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "daily_id", nullable = false)

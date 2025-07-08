@@ -1,5 +1,6 @@
 package com.haruhanip.api.daily.api;
 
+import com.haruhanip.api.daily.dto.DailyIdResponse;
 import com.haruhanip.api.daily.dto.DailyResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -82,4 +83,20 @@ public interface DailyQueryApi {
     })
     public ResponseEntity<DailyResponse> getDailyByDate(
             @PathVariable Long categoryId);
+
+    @Operation(summary = "오늘의 데일리 ID 조회", description = "특정 카테고리의 오늘 데일리 ID를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", examples = {
+                    @ExampleObject(name = "Today Daily ID Response Example", value = """
+                            {
+                              "daily_id": 5
+                            }
+                """)
+            })),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "404", description = "오늘의 데일리 없음")
+    })
+    public ResponseEntity<DailyIdResponse> getTodayDailyId(
+            @PathVariable Long categoryId
+    );
 }

@@ -21,7 +21,8 @@ public interface CategoryQueryApi {
         @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", examples = {
                 @ExampleObject(name = "Category Response Example", value = """
                 {
-                    "name": "Example Category"
+                    "id": 1,
+                    "name": "Category 1"
                 }
                 """)
         })),
@@ -36,9 +37,11 @@ public interface CategoryQueryApi {
                 @ExampleObject(name = "Category List Response Example", value = """
                 [
                     {
+                        "id": 1,
                         "name": "Category 1"
                     },
                     {
+                        "id": 2,
                         "name": "Category 2"
                     }
                 ]

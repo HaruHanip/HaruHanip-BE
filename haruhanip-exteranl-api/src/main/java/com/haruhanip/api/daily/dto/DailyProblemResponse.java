@@ -8,6 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class DailyProblemResponse {
+    private final Long dailyProblemId;
 
     private final int sequence;
 
@@ -15,13 +16,15 @@ public class DailyProblemResponse {
 
 
     @Builder
-    public DailyProblemResponse(int sequence, Problem problem, String title) {
+    public DailyProblemResponse(Long dailyProblemId, int sequence, Problem problem) {
+        this.dailyProblemId = dailyProblemId;
         this.sequence = sequence;
         this.problem = ProblemResponse.from(problem);
     }
 
     public static DailyProblemResponse from(DailyProblem dailyProblem) {
         return DailyProblemResponse.builder()
+                .dailyProblemId(dailyProblem.getDailyProblemId())
                 .sequence(dailyProblem.getSequence())
                 .problem(dailyProblem.getProblem())
                 .build();
