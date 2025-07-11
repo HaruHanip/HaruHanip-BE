@@ -39,9 +39,9 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
-        String sub = oidcUser.getSubject();
-        OAuthProvider provider = ((CustomOidcUser) oidcUser).getProvider();
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        String sub = customUser.getSubject();
+        OAuthProvider provider = customUser.getProvider();
 
         Optional<OAuthIdentity> oAuthIdentity = oAuthService.findWithUserBySubAndProvider(sub,provider);
         Optional<User> user;
@@ -57,7 +57,7 @@ public class Oauth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
         JwtToken token = jwtProvider.provideTokens(
                 user.get().getUserId(),
-                user.get().getNickname(),
+                user.get().getUsername(),
                 user.get().getUserRole(),
                 user.get().getRegistStatus()
         );

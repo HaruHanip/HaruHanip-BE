@@ -10,6 +10,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class CustomOidcUserService extends OidcUserService {
@@ -23,14 +25,22 @@ public class CustomOidcUserService extends OidcUserService {
 
         OAuthProvider provider = OAuthProvider.from(userRequest.getClientRegistration().getRegistrationId());
         String sub = oidcUser.getSubject();
+        String username = null;
+        String profileImageUrl = null;
 
         // 필요 시 분기
         switch (provider) {
             case KAKAO -> {
-
+                username = oidcUser.getNickName();
+                profileImageUrl = oidcUser.getPicture() != null ? oidcUser.getPicture().toString() : null;
             }
             case NAVER -> {
-
+                Map<String, Object> attributes = oidcUser.getAttributes();
+                @SuppressWarnings("unchecked")
+                Map<String, Object> response
+                        = (Map<String, Object>) attributes.get("response");
+                username = (String) response.get("nickname");
+                profileImageUrl = (String) response.get("profile_image");
             }
             case GOOGLE -> {
 
@@ -40,7 +50,7 @@ public class CustomOidcUserService extends OidcUserService {
         // 유저 가입 유무 체크
         if (oAuthService.findWithUserBySubAndProvider(sub, provider).isEmpty()){
             // 빈 사용자 생성
-        	userService.createUser(sub, provider);
+        	userService.createUser(sub, provider, username, profileImageUrl);
         }
 
         return new CustomOidcUser(oidcUser, provider);

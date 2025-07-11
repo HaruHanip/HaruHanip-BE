@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         return new CustomUserDetails(
                 user.get().getUserId(),
-                user.get().getNickname(),
+                user.get().getUsername(),
                 "",
                 user.get().getProfileImage(),
                 List.of(new SimpleGrantedAuthority(user.get().getUserRole().name()))

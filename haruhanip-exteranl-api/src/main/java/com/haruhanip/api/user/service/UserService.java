@@ -1,5 +1,6 @@
 package com.haruhanip.api.user.service;
 
+import com.haruhanip.api.user.dto.RegistUserRequest;
 import com.haruhanip.api.user.dto.UserProfileEditRequest;
 import com.haruhanip.api.user.dto.UserProfileResponse;
 import com.haruhanip.common.event.CreateUserEvent;
@@ -40,7 +41,7 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(u -> UserProfileResponse.builder()
                         .userId(u.getUserId())
-                        .nickname(u.getNickname())
+                        .nickname(u.getUsername())
                         .email(u.getEmail())
                         .profileImage(u.getProfileImage())
                         .registStatus(u.getRegistStatus())
@@ -66,13 +67,16 @@ public class UserService {
     }
 
     @Transactional
-    public void createUser(String sub, OAuthProvider provider) {
+    public void createUser(String sub, OAuthProvider provider, String username, String profileImageUrl) {
         // sub와 provider를 이용하여 유저가 존재하는지 확인
         if (oAuthService.findWithUserBySubAndProvider(sub, provider).isPresent()) {
             throw new IllegalStateException("User already exists");
         }
         // 유저 정보 생성
-        User user = User.builder().build();
+        User user = User.builder()
+                .username(username)
+                .profileImage(profileImageUrl)
+                .build();
         user.makeUser();
         userRepository.save(user);
         Long targetId = user.getUserId();
@@ -87,15 +91,15 @@ public class UserService {
     }
 
     @Transactional
-    public void registUser(Long userId, UserProfileEditRequest userProfileEditRequest) {
+    public void registUser(Long userId, RegistUserRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없음"));
 
         user.registUser(
-                userProfileEditRequest.nickname(),
-                userProfileEditRequest.email(),
-                userProfileEditRequest.profileImageUrl(),
-                userProfileEditRequest.birthday()
+                request.username(),
+                request.email(),
+                request.profileImageUrl(),
+                request.birthDate()
         );
     }
 
@@ -134,7 +138,7 @@ public class UserService {
 
         return UserProfileResponse.builder()
                 .userId(user.getUserId())
-                .nickname(user.getNickname())
+                .nickname(user.getUsername())
                 .email(user.getEmail())
                 .profileImage(user.getProfileImage())
                 .role(user.getUserRole())

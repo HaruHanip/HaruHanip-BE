@@ -1,6 +1,7 @@
 package com.haruhanip.api.user.dto;
 
 import com.haruhanip.domains.user.domain.RegistStatus;
+import com.haruhanip.domains.user.domain.User;
 import com.haruhanip.domains.user.domain.UserRole;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,5 +32,18 @@ public class UserProfileResponse {
         this.registStatus = registStatus;
         this.birthday = birthday;
         this.createdAt = createdAt;
+    }
+
+    public static UserProfileResponse from(User user) {
+        return UserProfileResponse.builder()
+                .userId(user.getUserId())
+                .nickname(user.getUsername())
+                .email(user.getEmail())
+                .profileImage(user.getProfileImage())
+                .role(user.getUserRole())
+                .registStatus(user.getRegistStatus())
+                .birthday(user.getBirthday())
+                .createdAt(user.getCreatedAt())
+                .build();
     }
 }

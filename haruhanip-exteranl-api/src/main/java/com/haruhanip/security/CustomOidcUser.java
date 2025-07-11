@@ -5,7 +5,7 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 
-public class CustomOidcUser extends DefaultOidcUser {
+public class CustomOidcUser extends DefaultOidcUser implements CustomUser {
     private final OAuthProvider provider;
 
     public CustomOidcUser(OidcUser delegate, OAuthProvider provider) {
@@ -13,7 +13,13 @@ public class CustomOidcUser extends DefaultOidcUser {
         this.provider = provider;
     }
 
+    @Override
     public OAuthProvider getProvider() {
         return provider;
+    }
+
+    @Override
+    public String getSubject() {
+        return getIdToken().getSubject();
     }
 }

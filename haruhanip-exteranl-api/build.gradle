@@ -13,6 +13,7 @@ dependencies {
     implementation project(':haruhanip-common')
     implementation project(':haruhanip-domain:domain-service')
     implementation project(':haruhanip-batch')
+    implementation project(':haruhanip-infra')
 
     // Spring Boot Web
     implementation 'org.springframework.boot:spring-boot-starter-web'

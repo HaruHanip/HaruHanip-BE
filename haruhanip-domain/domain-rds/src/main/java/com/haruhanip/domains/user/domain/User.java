@@ -23,8 +23,8 @@ public class User extends BaseEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "nickname", nullable = false, unique = true)
-    private String nickname;
+    @Column(name = "user_name", nullable = false)
+    private String username;
 
     @Column(name = "profile_image")
     private String profileImage;
@@ -41,11 +41,11 @@ public class User extends BaseEntity {
     private LocalDate birthday;
 
     @Builder(toBuilder = true)
-    public User(Long userId, String email, String nickname, String profileImage,
+    public User(Long userId, String email, String username, String profileImage,
                 UserRole userRole, RegistStatus registStatus, LocalDate birthday) {
         this.userId = userId;
         this.email = email;
-        this.nickname = nickname;
+        this.username = username;
         this.profileImage = profileImage;
         this.userRole = userRole;
         this.registStatus = registStatus;
@@ -54,21 +54,20 @@ public class User extends BaseEntity {
 
     public void makeUser() {
         this.email = UUID.randomUUID().toString() + "@example.com";
-        this.nickname = UUID.randomUUID().toString();
         this.userRole = UserRole.USER;
         this.registStatus = RegistStatus.NOT_YET;
     }
 
-    public void registUser(String nickname, String email, String profileImage, LocalDate birthday) {
-        this.nickname = nickname;
+    public void registUser(String username, String email, String profileImage, LocalDate birthday) {
+        this.username = username;
         this.email = email;
         this.profileImage = profileImage;
         this.birthday = birthday;
         this.registStatus = RegistStatus.REGISTERED;
     }
 
-    public void updateUser(String nickname, String email, String profileImage, LocalDate birthday) {
-        this.nickname = nickname;
+    public void updateUser(String username, String email, String profileImage, LocalDate birthday) {
+        this.username = username;
         this.email = email;
         this.profileImage = profileImage;
         this.birthday = birthday;
